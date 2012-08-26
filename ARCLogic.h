@@ -23,6 +23,12 @@
 #ifdef __WEAK
 #undef __WEAK
 #endif
+#ifdef es_dispatch_release
+#undef es_dispatch_release
+#endif
+#ifdef es_dispatch_retain
+#undef es_dispatch_retain
+#endif
 
 #define HASARC __has_feature(objc_arc)
 
@@ -52,4 +58,12 @@
 	#define NO_WEAK(NoWeakBlock) NoWeakBlock
 #endif
 
+#endif
+
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000 || MAC_OS_X_VERSION_MIN_REQUIRED >= 1080
+#define es_dispatch_release(dispatch_object)
+#define es_dispatch_retain(dispatch_object)
+#else
+#define es_dispatch_release(dispatch_object) dispatch_release(dispatch_object)
+#define es_dispatch_retain(dispatch_object) dispatch_retain(dispatch_object)
 #endif
