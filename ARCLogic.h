@@ -48,6 +48,13 @@
 		#define __WEAK __unsafe_unretained
 		#define NO_WEAK(NoWeakBlock) NoWeakBlock
 	#endif
+	#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000 || MAC_OS_X_VERSION_MIN_REQUIRED >= 1080
+		#define es_dispatch_release(dispatch_object)
+		#define es_dispatch_retain(dispatch_object)
+	#else
+		#define es_dispatch_release(dispatch_object) dispatch_release(dispatch_object)
+		#define es_dispatch_retain(dispatch_object) dispatch_retain(dispatch_object)
+	#endif
 #else
 	#define IF_ARC(ARCBlock, NoARCBlock) NoARCBlock
 	#define NO_ARC(NoARCBlock) NoARCBlock
@@ -56,14 +63,8 @@
 	#define WEAK assign
 	#define __WEAK 
 	#define NO_WEAK(NoWeakBlock) NoWeakBlock
+	#define es_dispatch_release(dispatch_object) dispatch_release(dispatch_object)
+	#define es_dispatch_retain(dispatch_object) dispatch_retain(dispatch_object)
 #endif
 
-#endif
-
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000 || MAC_OS_X_VERSION_MIN_REQUIRED >= 1080
-#define es_dispatch_release(dispatch_object)
-#define es_dispatch_retain(dispatch_object)
-#else
-#define es_dispatch_release(dispatch_object) dispatch_release(dispatch_object)
-#define es_dispatch_retain(dispatch_object) dispatch_retain(dispatch_object)
 #endif
